@@ -1,0 +1,482 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import {
+  categories,
+  categoryLabel,
+  formatPrice,
+  products,
+  type Product,
+} from '../../data/products';
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+type Props = { product: Product };
+const { product } = Astro.props;
+const category = categories.find((item) => item.id === product.category);
+const related = products
+  .filter((item) => item.category === product.category && item.slug !== product.slug)
+  .slice(0, 3);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: `${product.name} — ${product.producer}`,
+  image: new URL(product.image, Astro.site ?? 'https://chrisetdomi.vercel.app').toString(),
+  description: product.notes,
+  brand: { '@type': 'Brand', name: product.producer },
+  category: categoryLabel(product.category),
+  offers: {
+    '@type': 'Offer',
+    price: product.price.toFixed(2),
+    priceCurrency: 'EUR',
+    availability: 'https://schema.org/InStoreOnly',
+    seller: { '@type': 'LiquorStore', name: 'Le Caveau de Chris et Domi' },
+  },
+};
+---
+
+<BaseLayout
+  title={`${product.name} — ${product.producer} | Caveau Chris & Domi, Orange`}
+  description={`${product.name} (${product.producer}) : ${product.notes.slice(0, 150)}… Prix indicatif ${formatPrice(product.price)}. Disponible au Caveau Chris et Domi à Orange.`}
+>
+  <section class="product">
+    <div class="shell">
+      <nav class="breadcrumb" aria-label="Fil d’Ariane">
+        <a href="/">Accueil</a>
+        <span aria-hidden="true">/</span>
+        <a href="/catalogue">Catalogue</a>
+        <span aria-hidden="true">/</span>
+        <a href={`/catalogue?categorie=${product.category}`}>{category?.label}</a>
+        <span aria-hidden="true">/</span>
+        <span>{product.name}</span>
+      </nav>
+
+      <div class="product__grid">
+        <div class="product__visual" data-reveal="scale">
+          <div class="product__visual-top">
+            <span class="product__category">{category?.label}</span>
+            {product.badge && <span class="product__badge">{product.badge}</span>}
+          </div>
+          <img
+            class="product__bottle"
+            src={product.image}
+            alt={`Bouteille — ${product.name}, ${product.producer}`}
+            width="360"
+            height="360"
+          />
+          <p class="product__visual-note">Photo non contractuelle</p>
+          <div class="product__ring" aria-hidden="true"></div>
+        </div>
+
+        <div class="product__content">
+          <p class="kicker" data-reveal>{product.producer}</p>
+          <h1 data-reveal style="--reveal-delay:60ms">{product.name}</h1>
+          <p class="product__appellation" data-reveal style="--reveal-delay:100ms">
+            {product.appellation}{product.vintage ? ` · ${product.vintage}` : ''} · {product.region}
+          </p>
+
+          <div class="product__price-row" data-reveal style="--reveal-delay:140ms">
+            <p class="product__price">{formatPrice(product.price)}<small>prix indicatif</small></p>
+            <span class="product__stock">
+              <i aria-hidden="true"></i>
+              Disponible en boutique
+            </span>
+          </div>
+
+          <div class="product__notes" data-reveal style="--reveal-delay:180ms">
+            <p class="product__section-label">La dégustation</p>
+            <p>{product.notes}</p>
+          </div>
+
+          <div class="product__pairing" data-reveal style="--reveal-delay:220ms">
+            <p class="product__section-label">À table</p>
+            <p>{product.pairings}</p>
+          </div>
+
+          <dl class="product__details" data-reveal style="--reveal-delay:260ms">
+            <div><dt>Région</dt><dd>{product.region}</dd></div>
+            <div><dt>Appellation</dt><dd>{product.appellation}</dd></div>
+            <div><dt>Cépage</dt><dd>{product.grape}</dd></div>
+            {product.vintage && <div><dt>Millésime</dt><dd>{product.vintage}</dd></div>}
+            <div><dt>Format</dt><dd>{product.format}</dd></div>
+            <div><dt>Degré</dt><dd>{product.abv}</dd></div>
+          </dl>
+
+          <div class="product__actions" data-reveal style="--reveal-delay:300ms">
+            <a class="btn btn--solid" href="tel:+33488848667">
+              Réserver par téléphone
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" />
+              </svg>
+            </a>
+            <a class="btn btn--outline" href="/catalogue">Retour au catalogue</a>
+          </div>
+
+          <p class="product__notice" data-reveal>
+            Pas de vente en ligne. Appelez-nous ou passez à la cave : nous vérifions le stock
+            et mettons la bouteille de côté.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="product-more">
+    <div class="shell">
+      <div class="product-more__head">
+        <div>
+          <p class="kicker">Dans le même esprit</p>
+          <h2>À découvrir <em>aussi.</em></h2>
+        </div>
+        <a class="text-link" href={`/catalogue?categorie=${product.category}`}>
+          Voir tout
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="product-more__grid">
+        {related.map((item, index) => (
+          <ProductCard product={item} index={index} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</BaseLayout>
+
+<style>
+  .product {
+    padding-top: clamp(26px, 3.6vw, 46px);
+    padding-bottom: clamp(70px, 9vw, 130px);
+    background: var(--paper);
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-bottom: clamp(30px, 4vw, 54px);
+    font-size: 8.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .breadcrumb a {
+    transition: color 0.3s;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--wine);
+  }
+
+  .breadcrumb span[aria-hidden] {
+    opacity: 0.4;
+  }
+
+  .product__grid {
+    display: grid;
+    grid-template-columns: 0.92fr 1.08fr;
+    gap: clamp(44px, 7vw, 110px);
+    align-items: start;
+  }
+
+  .product__visual {
+    position: sticky;
+    top: calc(var(--header-h) + 30px);
+    aspect-ratio: 1 / 1.08;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 78%, rgba(255, 252, 246, 0.95) 0%, rgba(236, 227, 212, 0) 62%),
+      linear-gradient(180deg, #f2ecdf 0%, #e8dfcf 100%);
+    border: 1px solid var(--line);
+  }
+
+  .product__visual::before {
+    content: '';
+    position: absolute;
+    inset: 16px;
+    border: 1px solid rgba(36, 18, 22, 0.08);
+    pointer-events: none;
+  }
+
+  .product__visual-top {
+    position: absolute;
+    top: 26px;
+    left: 28px;
+    right: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    z-index: 1;
+  }
+
+  .product__category {
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .product__badge {
+    padding: 5px 8px 4px;
+    background: var(--wine);
+    color: var(--cream);
+    font-size: 7px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .product__bottle {
+    position: relative;
+    z-index: 1;
+    width: auto;
+    max-width: 60%;
+    max-height: 64%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+  }
+
+  .product__visual-note {
+    position: absolute;
+    bottom: 26px;
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(113, 92, 94, 0.7);
+  }
+
+  .product__ring {
+    position: absolute;
+    bottom: 13%;
+    left: 50%;
+    width: 58%;
+    height: 26px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(49, 24, 19, 0.16) 0%, rgba(49, 24, 19, 0) 72%);
+    transform: translateX(-50%);
+  }
+
+  .product__content {
+    padding-top: 8px;
+  }
+
+  .product__content h1 {
+    margin-top: 20px;
+    font-size: clamp(2.9rem, 5.4vw, 5.4rem);
+    line-height: 0.94;
+    letter-spacing: -0.028em;
+  }
+
+  .product__appellation {
+    margin-top: 18px;
+    font-size: 10.5px;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .product__price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 30px;
+    padding-block: 20px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .product__price {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--font-sans);
+    font-size: clamp(1.7rem, 2.3vw, 2.15rem);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--wine);
+  }
+
+  .product__price small {
+    font-family: var(--font-sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .product__stock {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #5d6b45;
+  }
+
+  .product__stock i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #77865c;
+  }
+
+  .product__notes,
+  .product__pairing {
+    margin-top: 30px;
+  }
+
+  .product__section-label {
+    font-size: 8.5px !important;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 12px;
+  }
+
+  .product__notes > p:last-child,
+  .product__pairing > p:last-child {
+    max-width: 58ch;
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  .product__pairing {
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .product__details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 30px;
+    margin-top: 30px;
+    border-top: 1px solid var(--line);
+  }
+
+  .product__details > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    padding-block: 9px;
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+  }
+
+  .product__details dt {
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .product__details dd {
+    margin: 0;
+    text-align: right;
+    color: var(--ink-soft);
+  }
+
+  .product__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  .product__notice {
+    max-width: 52ch;
+    margin-top: 18px;
+    font-size: 9.5px;
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+    color: rgba(113, 92, 94, 0.8);
+  }
+
+  .product-more {
+    padding-block: clamp(60px, 8vw, 110px);
+    background: var(--paper-deep);
+    border-top: 1px solid var(--line);
+  }
+
+  .product-more__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: clamp(30px, 4vw, 48px);
+  }
+
+  .product-more__head h2 {
+    margin-top: 16px;
+    font-size: clamp(2.1rem, 3.6vw, 3.3rem);
+  }
+
+  .product-more__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  @media (max-width: 960px) {
+    .product__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .product__visual {
+      position: relative;
+      top: 0;
+      max-width: 560px;
+      width: 100%;
+      margin-inline: auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    .product__bottle {
+      max-height: 60%;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .product__price-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .product__details {
+      grid-template-columns: 1fr;
+    }
+
+    .product-more__head {
+      display: block;
+    }
+
+    .product-more__head .text-link {
+      margin-top: 18px;
+    }
+
+    .product-more__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

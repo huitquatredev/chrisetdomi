@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page introuvable — Caveau Chris & Domi"
+  description="Cette page n’existe pas ou plus. Retrouvez le catalogue et les informations pratiques du Caveau Chris et Domi à Orange."
+  noindex
+>
+  <section class="not-found">
+    <div class="shell not-found__inner">
+      <p class="kicker">Erreur 404</p>
+      <h1>Cette page a<br /><em>été bue.</em></h1>
+      <p class="not-found__text">
+        La bouteille est introuvable, ou la page a changé d’adresse. Le catalogue, lui, est
+        toujours là.
+      </p>
+      <div class="not-found__actions">
+        <a class="btn btn--solid" href="/catalogue">Parcourir le catalogue</a>
+        <a class="btn btn--outline" href="/">Retour à l’accueil</a>
+      </div>
+    </div>
+    <img class="not-found__mark" src="/brand/logo-mark.png" alt="" aria-hidden="true" />
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    position: relative;
+    min-height: 64vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--paper);
+  }
+
+  .not-found__inner {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(80px, 10vw, 140px);
+  }
+
+  .not-found h1 {
+    margin-top: 24px;
+    font-size: clamp(3.2rem, 8vw, 7.4rem);
+  }
+
+  .not-found__text {
+    margin-top: 24px;
+    max-width: 44ch;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+
+  .not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .not-found__mark {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    width: clamp(100px, 15vw, 210px);
+    opacity: 0.09;
+    transform: translateY(-50%) rotate(7deg);
+  }
+</style>

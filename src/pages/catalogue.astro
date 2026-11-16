@@ -1,0 +1,519 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { products } from '../data/products';
+
+const categories = [
+  { id: 'tout', label: 'Tout' },
+  { id: 'vins', label: 'Vins' },
+  { id: 'rouges', label: 'Rouges' },
+  { id: 'blancs', label: 'Blancs' },
+  { id: 'roses', label: 'Rosés' },
+  { id: 'champagnes', label: 'Champagnes' },
+  { id: 'effervescents', label: 'Bulles' },
+  { id: 'spiritueux', label: 'Spiritueux' },
+  { id: 'bieres', label: 'Bières' },
+];
+---
+
+<BaseLayout
+  title="Le catalogue — Vins, champagnes, spiritueux & bières | Caveau Chris & Domi"
+  description="Parcourez la sélection du Caveau Chris et Domi à Orange : vins de vignerons, champagnes, spiritueux, bières artisanales. Prix indicatifs, vente exclusivement en boutique."
+>
+  <section class="catalog-hero">
+    <div class="shell">
+      <nav class="breadcrumb" aria-label="Fil d’Ariane">
+        <a href="/">Accueil</a>
+        <span aria-hidden="true">/</span>
+        <span>Catalogue</span>
+      </nav>
+
+      <p class="kicker" data-reveal>Le catalogue</p>
+      <h1 data-reveal style="--reveal-delay:70ms">La cave,<br /><em>en entier.</em></h1>
+
+      <div class="catalog-hero__bottom" data-reveal style="--reveal-delay:130ms">
+        <p>
+          Un aperçu de nos étagères. Vins de vignerons, champagnes, spiritueux et bières
+          artisanales : tout est disponible en boutique, rien n’est vendu en ligne.
+        </p>
+        <div class="catalog-hero__meta">
+          <span class="catalog-hero__count"><span data-result-count>{products.length}</span> références</span>
+          <span class="catalog-hero__dot" aria-hidden="true"></span>
+          <span>Prix indicatifs</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="catalog-body">
+    <div class="shell">
+      <div class="catalog-bar" data-catalog-bar>
+        <div class="catalog-bar__filters" role="group" aria-label="Filtrer par catégorie">
+          {categories.map((category) => (
+            <button
+              class="chip"
+              type="button"
+              data-filter={category.id}
+              aria-pressed={category.id === 'tout' ? 'true' : 'false'}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
+
+        <div class="catalog-bar__search">
+          <label class="sr-only" for="catalog-search">Rechercher une bouteille, un domaine, une région</label>
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="5.4" stroke="currentColor" stroke-width="1.1" />
+            <path d="M13 13l3.4 3.4" stroke="currentColor" stroke-width="1.1" />
+          </svg>
+          <input
+            id="catalog-search"
+            type="search"
+            placeholder="Une bouteille, un domaine, une région…"
+            autocomplete="off"
+            data-search
+          />
+          <button class="catalog-bar__clear" type="button" data-clear aria-label="Effacer la recherche" hidden>
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.2" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="catalog-grid" data-grid>
+        {products.map((product, index) => (
+          <ProductCard product={product} index={index} eager={index < 4} />
+        ))}
+      </div>
+
+      <div class="catalog-empty" data-empty hidden>
+        <p class="kicker kicker--plain">Aucun résultat</p>
+        <p class="catalog-empty__title">Cette bouteille n’est pas encore sur nos étagères.</p>
+        <p class="catalog-empty__text">
+          Essayez un autre mot, ou appelez-nous : le stock change toutes les semaines et
+          nous pouvons souvent commander ce que vous cherchez.
+        </p>
+        <button class="btn btn--outline" type="button" data-reset>Réinitialiser les filtres</button>
+      </div>
+
+      <div class="catalog-help" data-reveal>
+        <div>
+          <p class="kicker kicker--plain">Vous cherchez une bouteille précise ?</p>
+          <p class="catalog-help__title">Le catalogue n’est qu’un aperçu.</p>
+          <p class="catalog-help__text">
+            Avec 2 500 références en cave, tout ne tient pas sur cette page. Dites-nous ce
+            que vous cherchez : nous vérifions le stock et pouvons commander si besoin.
+          </p>
+        </div>
+        <div class="catalog-help__actions">
+          <a class="btn btn--solid" href="tel:+33488848667">
+            04 88 84 86 67
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" />
+            </svg>
+          </a>
+          <a class="btn btn--outline" href="mailto:contact@caveaudechrisetdomi.com">Nous écrire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .catalog-hero {
+    padding-top: clamp(24px, 3vw, 38px);
+    padding-bottom: clamp(30px, 3.4vw, 46px);
+    background: var(--paper);
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: clamp(24px, 3vw, 38px);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .breadcrumb a {
+    transition: color 0.3s;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--wine);
+  }
+
+  .breadcrumb span[aria-hidden] {
+    opacity: 0.4;
+  }
+
+  .catalog-hero h1 {
+    margin-top: 20px;
+    font-size: clamp(2.9rem, 5.2vw, 5.4rem);
+    line-height: 0.94;
+  }
+
+  .catalog-hero__bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(30px, 6vw, 100px);
+    margin-top: clamp(24px, 2.8vw, 38px);
+    padding-top: clamp(18px, 2.2vw, 26px);
+    border-top: 1px solid var(--line);
+  }
+
+  .catalog-hero__bottom > p {
+    max-width: 50ch;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+
+  .catalog-hero__meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    font-size: 8.5px;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .catalog-hero__count {
+    color: var(--wine);
+  }
+
+  .catalog-hero__dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--pink);
+  }
+
+  .catalog-body {
+    padding-bottom: clamp(70px, 9vw, 130px);
+    background: var(--paper-deep);
+    border-top: 1px solid var(--line);
+  }
+
+  .catalog-bar {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 14px;
+    margin-bottom: clamp(24px, 3vw, 38px);
+    background: var(--paper-deep);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .catalog-bar__filters {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    position: relative;
+    padding: 8px 13px;
+    border: 1px solid transparent;
+    background: transparent;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition:
+      color 0.3s,
+      border-color 0.3s,
+      background 0.3s;
+  }
+
+  .chip:hover {
+    color: var(--wine);
+  }
+
+  .chip[aria-pressed='true'] {
+    background: var(--wine);
+    border-color: var(--wine);
+    color: var(--cream);
+  }
+
+  .catalog-bar__search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: min(320px, 100%);
+    flex-shrink: 0;
+    padding: 0 12px;
+    height: 38px;
+    border: 1px solid var(--line-strong);
+    background: var(--cream);
+    transition: border-color 0.3s;
+  }
+
+  .catalog-bar__search:focus-within {
+    border-color: var(--wine);
+  }
+
+  .catalog-bar__search > svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: var(--muted);
+  }
+
+  .catalog-bar__search input {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    outline: none;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+
+  .catalog-bar__search input::placeholder {
+    color: rgba(113, 92, 94, 0.7);
+  }
+
+  .catalog-bar__search input::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  .catalog-bar__clear {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border: 0;
+    background: var(--paper-deep);
+    color: var(--ink-soft);
+  }
+
+  .catalog-bar__clear svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+
+  .catalog-grid :global(article[hidden]) {
+    display: none;
+  }
+
+  .catalog-empty {
+    padding-block: clamp(60px, 8vw, 110px);
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .catalog-empty__title {
+    margin-top: 16px;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 3.4vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .catalog-empty__text {
+    max-width: 50ch;
+    margin: 16px auto 26px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .catalog-help {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(30px, 6vw, 90px);
+    margin-top: clamp(60px, 8vw, 100px);
+    padding-top: clamp(30px, 4vw, 46px);
+    border-top: 1px solid var(--line);
+  }
+
+  .catalog-help__title {
+    margin-top: 16px;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 3vw, 2.7rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .catalog-help__text {
+    max-width: 55ch;
+    margin-top: 12px;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+
+  .catalog-help__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 1250px) {
+    .catalog-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .catalog-bar {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .catalog-bar__filters {
+      width: 100%;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .catalog-bar__filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    .catalog-bar__search {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .catalog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .catalog-hero__bottom,
+    .catalog-help {
+      display: block;
+    }
+
+    .catalog-hero__meta {
+      margin-top: 18px;
+    }
+
+    .catalog-help__actions {
+      margin-top: 22px;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .catalog-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .catalog-hero h1 {
+      font-size: clamp(2.9rem, 13vw, 4rem);
+    }
+
+    .catalog-bar {
+      top: var(--header-h);
+    }
+  }
+</style>
+
+<script>
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-product]'));
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+  const search = document.querySelector<HTMLInputElement>('[data-search]');
+  const clear = document.querySelector<HTMLButtonElement>('[data-clear]');
+  const resultCount = document.querySelector<HTMLElement>('[data-result-count]');
+  const empty = document.querySelector<HTMLElement>('[data-empty]');
+  const reset = document.querySelector<HTMLButtonElement>('[data-reset]');
+
+  const groups: Record<string, string[]> = {
+    vins: ['rouges', 'blancs', 'roses'],
+    tout: [],
+  };
+
+  let active = 'tout';
+
+  const normalize = (value: string) =>
+    value
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+  const setUrl = () => {
+    const url = new URL(window.location.href);
+    if (active === 'tout') url.searchParams.delete('categorie');
+    else url.searchParams.set('categorie', active);
+    window.history.replaceState({}, '', url);
+  };
+
+  const apply = (updateUrl = true) => {
+    const query = normalize(search?.value.trim() ?? '');
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const category = card.dataset.category ?? '';
+      const inCategory =
+        active === 'tout' || (groups[active]?.includes(category) ?? category === active);
+      const matches = !query || normalize(card.dataset.search ?? '').includes(query);
+      const show = inCategory && matches;
+      card.hidden = !show;
+      if (show) visible += 1;
+    });
+
+    if (resultCount) resultCount.textContent = String(visible);
+    if (empty) empty.hidden = visible !== 0;
+    if (clear) clear.hidden = !search?.value;
+    if (updateUrl) setUrl();
+  };
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      active = chip.dataset.filter ?? 'tout';
+      chips.forEach((item) => item.setAttribute('aria-pressed', String(item === chip)));
+      apply();
+    });
+  });
+
+  search?.addEventListener('input', () => apply());
+  clear?.addEventListener('click', () => {
+    if (search) search.value = '';
+    search?.focus();
+    apply();
+  });
+
+  const resetAll = () => {
+    active = 'tout';
+    if (search) search.value = '';
+    chips.forEach((chip) => chip.setAttribute('aria-pressed', String(chip.dataset.filter === 'tout')));
+    apply();
+  };
+
+  reset?.addEventListener('click', resetAll);
+
+  const initial = new URL(window.location.href).searchParams.get('categorie');
+  if (initial && (initial === 'tout' || initial === 'vins' || chips.some((chip) => chip.dataset.filter === initial))) {
+    active = initial;
+  }
+
+  chips.forEach((chip) => chip.setAttribute('aria-pressed', String(chip.dataset.filter === active)));
+  apply(false);
+</script>

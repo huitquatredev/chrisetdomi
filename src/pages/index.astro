@@ -1,0 +1,2138 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { featuredProducts } from '../data/products';
+import heroImage from '../assets/hero-cellar.jpg';
+import storyImage from '../assets/gervasio.jpg';
+import terroirImage from '../assets/terroir.jpg';
+import tireuseImage from '../assets/tireuse.jpg';
+
+const marqueeItems = [
+  'Vins de vignerons',
+  'Champagnes',
+  'Spiritueux',
+  'Bières artisanales',
+  'Location de tireuses',
+  'Conseil & dégustation',
+];
+
+const universes = [
+  {
+    number: '01',
+    name: 'Vins',
+    href: '/catalogue?categorie=vins',
+    description: 'Rhône, Provence, Loire, Languedoc et quelques escapades italiennes.',
+    count: '13 références',
+    image: '/images/univers-rouges.jpg',
+  },
+  {
+    number: '02',
+    name: 'Champagnes',
+    href: '/catalogue?categorie=champagnes',
+    description: 'Maisons de renom et vignerons de caractère.',
+    count: '3 références',
+    image: '/images/univers-champagnes.jpg',
+  },
+  {
+    number: '03',
+    name: 'Spiritueux',
+    href: '/catalogue?categorie=spiritueux',
+    description: 'Whisky, rhum, gin, cognac et pastis de Provence.',
+    count: '5 références',
+    image: '/images/univers-spiritueux.jpg',
+  },
+  {
+    number: '04',
+    name: 'Bières',
+    href: '/catalogue?categorie=bieres',
+    description: 'Brasseries artisanales, dont le Mont Ventoux à deux pas d’Orange.',
+    count: '4 références',
+    image: '/images/univers-bieres.jpg',
+  },
+  {
+    number: '05',
+    name: 'Tireuses à bière',
+    href: '/#tireuses',
+    description: 'Pour vos fêtes, mariages et repas d’entreprise.',
+    count: 'Location',
+    image: '/images/univers-bieres.jpg',
+  },
+];
+
+const reviews = [
+  {
+    text: 'Très large choix de vins, bières et spiritueux. Équipe professionnelle et sympathique. Excellents conseils. Adresse recommandée !',
+    source: 'Avis Google',
+  },
+  {
+    text: 'Très bon choix de vins, spiritueux et bières. À tester pour les amateurs de bières notamment : cervoise des ancêtres, blonde triple. Bonne découverte.',
+    source: 'Avis Google',
+  },
+];
+
+const hours = [
+  { label: 'Lundi', value: '14h30 – 19h30', day: 1 },
+  { label: 'Mardi', value: '9h30 – 13h / 14h30 – 19h30', day: 2 },
+  { label: 'Mercredi', value: '9h30 – 13h / 14h30 – 19h30', day: 3 },
+  { label: 'Jeudi', value: '9h30 – 13h / 14h30 – 19h30', day: 4 },
+  { label: 'Vendredi', value: '9h30 – 13h / 14h30 – 19h30', day: 5 },
+  { label: 'Samedi', value: '9h30 – 19h30', day: 6 },
+  { label: 'Dimanche', value: 'Fermé', day: 0, closed: true },
+];
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="hero__media">
+      <Image
+        src={heroImage}
+        alt="Une allée de casiers de bouteilles dans une cave, éclairée à la lueur chaude des lampes."
+        widths={[900, 1400, 1900, 2200]}
+        sizes="100vw"
+        format="webp"
+        quality={82}
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="hero__veil"></div>
+    </div>
+
+    <div class="hero__inner shell">
+      <div class="hero__top">
+        <p class="hero__eyebrow">
+          <span aria-hidden="true"></span>
+          Caveau à Orange · Depuis 2012
+        </p>
+        <p class="hero__side">
+          Vins · Champagnes<br />
+          Spiritueux · Bières
+        </p>
+      </div>
+
+      <div class="hero__content">
+        <h1>Les vins que<br /><em>l’on aime servir.</em></h1>
+        <div class="hero__bottom">
+          <p class="hero__sub">
+            Vins de vignerons, champagnes, spiritueux et bières artisanales.
+            Une sélection de 2 500 références, à découvrir avenue de Verdun.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--cream" href="#selection">
+              La sélection
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" />
+              </svg>
+            </a>
+            <a class="btn btn--outline-light" href="#nous-trouver">Nous rendre visite</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__meta">
+      <div class="shell hero__meta-inner">
+        <p><span>01</span> 500 avenue de Verdun, Orange</p>
+        <p><span>02</span> Lundi – samedi</p>
+        <p><span>03</span> <a href="tel:+33488848667">04 88 84 86 67</a></p>
+        <p class="hero__scroll"><span aria-hidden="true"></span> Faites défiler</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="intro section" id="le-caveau">
+    <div class="shell">
+      <p class="kicker" data-reveal>Le caveau</p>
+      <h2 class="intro__statement" data-reveal style="--reveal-delay:80ms">
+        Une sélection <em>choisie une à une</em>, pour les grandes occasions comme pour le
+        dimanche soir.
+      </h2>
+
+      <div class="intro__bottom">
+        <div class="intro__text" data-reveal style="--reveal-delay:140ms">
+          <p>
+            Nous ne cherchons pas à tout avoir. Nous cherchons les bouteilles qui valent le
+            détour, celles qui racontent un vigneron, un terroir, une envie. Et nous aimons
+            par-dessus tout vous aider à trouver la bonne.
+          </p>
+          <a class="text-link" href="/catalogue">
+            Parcourir le catalogue
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" />
+            </svg>
+          </a>
+        </div>
+
+        <dl class="stats" data-reveal style="--reveal-delay:220ms">
+          <div>
+            <dt>Références</dt>
+            <dd>2 500</dd>
+            <span>vins, bulles, spiritueux & bières</span>
+          </div>
+          <div>
+            <dt>La cave</dt>
+            <dd>2012</dd>
+            <span>une affaire de famille</span>
+          </div>
+          <div>
+            <dt>Avis Google</dt>
+            <dd class="stats__rating">4,7<small>/5</small></dd>
+            <span>sur 85 avis</span>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      {Array.from({ length: 2 }).map(() => (
+        <div class="marquee__group">
+          {marqueeItems.map((item) => (
+            <span><i>◆</i>{item}</span>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <section class="story section" id="la-maison">
+    <div class="shell story__grid">
+      <div class="story__visual" data-reveal="scale">
+        <div class="media media--arch arch-frame story__image">
+          <Image
+            src={storyImage}
+            alt="Rémi Gervasio, caviste à Orange, sent un verre de vin rouge devant les rayonnages de la cave."
+            widths={[600, 900, 1200]}
+            sizes="(max-width: 960px) 90vw, 42vw"
+            format="webp"
+            quality={82}
+            loading="lazy"
+          />
+        </div>
+        <div class="story__seal" aria-hidden="true">
+          <span>Depuis</span>
+          <strong>2012</strong>
+          <span>à Orange</span>
+        </div>
+        <p class="story__caption">Rémi Gervasio, au comptoir.</p>
+      </div>
+
+      <div class="story__content">
+        <p class="kicker" data-reveal>La maison</p>
+        <h2 data-reveal style="--reveal-delay:80ms">
+          Une histoire de famille,<br />
+          <em>née avenue de Verdun.</em>
+        </h2>
+
+        <div class="story__text" data-reveal style="--reveal-delay:150ms">
+          <p>
+            En 2012, Christine et Dominique Gervasio ouvrent leur caveau à Orange.
+            Dominique a passé plus de trente ans dans les caves de Châteauneuf-du-Pape ;
+            leur fils Rémi, formé au lycée viticole d’Orange, a naturellement pris la suite.
+          </p>
+          <p>
+            Aujourd’hui, c’est lui qui vous accueille. Du petit rouge de semaine au grand
+            champagne, il prend le temps de comprendre ce que vous cherchez. Ici, pas de
+            jargon ni de discours intimidant : on goûte, on échange, on choisit ensemble.
+          </p>
+        </div>
+
+        <div class="story__signature" data-reveal style="--reveal-delay:220ms">
+          <p class="story__name">Rémi Gervasio</p>
+          <p class="story__role">Caviste · Caveau Chris &amp; Domi</p>
+        </div>
+
+        <blockquote class="story__quote" data-reveal style="--reveal-delay:280ms">
+          <p>« On ne se prend pas la tête ! »</p>
+          <cite>Le Dauphiné libéré</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="selection section" id="selection">
+    <div class="shell">
+      <div class="section-head">
+        <div class="section-head__title">
+          <p class="kicker" data-reveal>La sélection du moment</p>
+          <h2 data-reveal style="--reveal-delay:80ms">
+            Quelques bouteilles<br />
+            <em>qui nous ressemblent.</em>
+          </h2>
+        </div>
+        <div class="section-head__aside" data-reveal style="--reveal-delay:140ms">
+          <p>
+            Un aperçu de la cave. Les prix sont indicatifs : le stock évolue chaque semaine,
+            le meilleur moyen de choisir reste d’en parler ensemble.
+          </p>
+          <a class="text-link" href="/catalogue" style="margin-top:18px">
+            Tout le catalogue
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="products-grid">
+        {featuredProducts.map((product, index) => (
+          <ProductCard product={product} index={index} eager={index === 0} />
+        ))}
+      </div>
+
+      <p class="selection__note" data-reveal>
+        Prix indicatifs · Disponibles en boutique · Pas de vente en ligne
+      </p>
+    </div>
+  </section>
+
+  <section class="universes section">
+    <div class="shell">
+      <div class="universes__head">
+        <div>
+          <p class="kicker" data-reveal>Les univers</p>
+          <h2 data-reveal style="--reveal-delay:80ms">Cinq façons<br /><em>de se faire plaisir.</em></h2>
+        </div>
+        <p class="universes__intro" data-reveal style="--reveal-delay:140ms">
+          De la bouteille de tous les jours au flacon que l’on garde pour une occasion.
+          Prenez le temps de regarder, nous sommes là pour le reste.
+        </p>
+      </div>
+
+      <div class="universes__list">
+        {universes.map((universe) => (
+          <a
+            class="universe"
+            href={universe.href}
+            data-preview={universe.image}
+            data-reveal
+          >
+            <span class="universe__number">{universe.number}</span>
+            <span class="universe__name">{universe.name}</span>
+            <span class="universe__description">{universe.description}</span>
+            <span class="universe__count">{universe.count}</span>
+            <span class="universe__thumb" aria-hidden="true">
+              <img src={universe.image} alt="" loading="lazy" />
+            </span>
+            <span class="universe__arrow" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <path d="M4 16L16 4M7 4h9v9" stroke="currentColor" stroke-width="1.1" />
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+    <div class="universe-preview" aria-hidden="true">
+      <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="" />
+    </div>
+  </section>
+
+  <section class="hire" id="tireuses">
+    <div class="shell hire__grid">
+      <div class="hire__visual" data-reveal="scale">
+        <div class="media hire__image">
+          <Image
+            src={tireuseImage}
+            alt="Une tireuse à bière professionnelle, un verre frais servi sous la pression."
+            widths={[700, 1100, 1500]}
+            sizes="(max-width: 900px) 100vw, 46vw"
+            format="webp"
+            quality={82}
+            loading="lazy"
+          />
+        </div>
+        <p class="hire__label">Location · Événements</p>
+      </div>
+
+      <div class="hire__content">
+        <p class="kicker kicker--light" data-reveal>Location de tireuses</p>
+        <h2 data-reveal style="--reveal-delay:80ms">
+          La pression,<br />
+          <em>sans l’installation.</em>
+        </h2>
+        <p class="hire__text" data-reveal style="--reveal-delay:140ms">
+          Mariage, anniversaire, repas d’entreprise : nous louons des tireuses à bière
+          prêtes à servir, avec des fûts de la Brasserie du Mont Ventoux et d’autres
+          brasseries artisanales. Livraison, installation et récupération à Orange et
+          dans un rayon de 30 km.
+        </p>
+
+        <ul class="hire__features" data-reveal style="--reveal-delay:200ms">
+          <li><span>01</span> Tireuses 1 à 4 becs</li>
+          <li><span>02</span> Fûts de 20 L et 30 L</li>
+          <li><span>03</span> Livraison & reprise</li>
+          <li><span>04</span> Bières locales du Ventoux</li>
+        </ul>
+
+        <div class="hire__actions" data-reveal style="--reveal-delay:260ms">
+          <a class="btn btn--cream" href="tel:+33488848667">
+            Demander un devis
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" />
+            </svg>
+          </a>
+          <a class="btn btn--outline-light" href="/catalogue?categorie=bieres">Voir les bières</a>
+        </div>
+
+        <p class="hire__note" data-reveal>
+          Réservation conseillée deux semaines à l’avance. Caution demandée selon le matériel.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="terroir">
+    <Image
+      src={terroirImage}
+      alt="Des rangs de vigne sur les coteaux, sous un ciel de Provence."
+      widths={[1200, 1800, 2400]}
+      sizes="100vw"
+      format="webp"
+      quality={80}
+      loading="lazy"
+    />
+    <div class="terroir__veil"></div>
+    <div class="shell terroir__content">
+      <p class="kicker kicker--light" data-reveal>D’ici et d’ailleurs</p>
+      <blockquote class="terroir__quote" data-reveal style="--reveal-delay:100ms">
+        Les galets de Châteauneuf, les terrasses des Alpilles, les granits de Côte-Rôtie.
+        Nous choisissons des vins qui ont <em>un lieu à raconter.</em>
+      </blockquote>
+      <p class="terroir__source" data-reveal style="--reveal-delay:180ms">La maison</p>
+    </div>
+  </section>
+
+  <section class="reviews section">
+    <div class="shell reviews__grid">
+      <div class="reviews__intro">
+        <p class="kicker" data-reveal>Ils sont venus, ils reviennent</p>
+        <h2 data-reveal style="--reveal-delay:80ms">
+          La confiance se gagne<br />
+          <em>au comptoir.</em>
+        </h2>
+
+        <div class="reviews__rating" data-reveal style="--reveal-delay:140ms">
+          <span class="reviews__score">4,7<small>/5</small></span>
+          <span>
+            <span class="reviews__stars" aria-hidden="true">★★★★★</span>
+            <span class="reviews__count">85 avis Google</span>
+          </span>
+        </div>
+
+        <a
+          class="text-link"
+          href="https://www.google.com/maps/search/?api=1&query=Caveau+de+Chris+et+Domi+Orange"
+          target="_blank"
+          rel="noopener"
+          data-reveal
+          style="--reveal-delay:200ms"
+        >
+          Lire les avis
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.2" />
+          </svg>
+        </a>
+        <p class="reviews__note" data-reveal style="--reveal-delay:240ms">
+          Depuis 2012, notre meilleure publicité reste le bouche-à-oreille.
+        </p>
+      </div>
+
+      <div class="reviews__quotes">
+        {reviews.map((review, index) => (
+          <blockquote data-reveal style={`--reveal-delay:${index * 90 + 120}ms`}>
+            <p>“{review.text}”</p>
+            <cite>{review.source}</cite>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="practical section" id="nous-trouver">
+    <div class="shell practical__grid">
+      <div class="practical__info">
+        <p class="kicker" data-reveal>Nous trouver</p>
+        <h2 data-reveal style="--reveal-delay:80ms">
+          Poussez la porte,<br />
+          <em>on s’occupe du reste.</em>
+        </h2>
+
+        <div class="practical__status" data-open-status data-reveal style="--reveal-delay:120ms">
+          <span class="practical__status-dot" aria-hidden="true"></span>
+          <span data-open-label>Ouvert aujourd’hui</span>
+        </div>
+
+        <div class="practical__address" data-reveal style="--reveal-delay:160ms">
+          <p class="practical__address-label">Le caveau</p>
+          <p class="practical__address-line">500 avenue de Verdun</p>
+          <p class="practical__address-city">84100 Orange</p>
+          <p class="practical__address-note">Lieu-dit Les Sables Ouest · Parking gratuit devant la cave</p>
+        </div>
+
+        <div class="practical__contact" data-reveal style="--reveal-delay:200ms">
+          <a class="practical__phone" href="tel:+33488848667">04 88 84 86 67</a>
+          <a class="practical__mail" href="mailto:contact@caveaudechrisetdomi.com">contact@caveaudechrisetdomi.com</a>
+        </div>
+
+        <div class="practical__buttons" data-reveal style="--reveal-delay:240ms">
+          <a
+            class="btn btn--solid"
+            href="https://www.google.com/maps/search/?api=1&query=500+avenue+de+Verdun+84100+Orange"
+            target="_blank"
+            rel="noopener"
+          >
+            Itinéraire
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.2" />
+            </svg>
+          </a>
+          <a class="btn btn--outline" href="tel:+33488848667">Appeler la cave</a>
+        </div>
+
+        <div class="practical__good" data-reveal style="--reveal-delay:280ms">
+          <p class="practical__good-title">Bon à savoir</p>
+          <ul>
+            <li>Parking gratuit devant la cave</li>
+            <li>Conseil personnalisé, sans rendez-vous</li>
+            <li>Location de tireuses sur réservation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="practical__side">
+        <div class="practical__map" data-reveal="fade">
+          <iframe
+            title="Carte — Caveau Chris et Domi, 500 avenue de Verdun, Orange"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=4.81850%2C44.12269%2C4.83050%2C44.12869&layer=mapnik&marker=44.12569%2C4.824512"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+          <div class="practical__map-card">
+            <img src="/brand/logo-mark.png" alt="" width="14" height="26" />
+            <span>Caveau Chris &amp; Domi<br /><small>84100 Orange</small></span>
+          </div>
+        </div>
+
+        <div class="practical__hours" data-reveal style="--reveal-delay:100ms">
+          <p class="practical__hours-title">Horaires</p>
+          <dl>
+            {hours.map((day) => (
+              <div data-hours-day={day.day} class:list={{ 'is-closed': day.closed }}>
+                <dt>{day.label}</dt>
+                <dd>{day.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <img class="closing__mark" src="/brand/logo-mark.png" alt="" aria-hidden="true" />
+    <div class="shell closing__inner">
+      <p class="kicker kicker--light" data-reveal>À très vite</p>
+      <h2 data-reveal style="--reveal-delay:80ms">
+        Une envie, un menu,<br />
+        <em>un événement ?</em>
+      </h2>
+      <p class="closing__text" data-reveal style="--reveal-delay:140ms">
+        Passez nous voir ou appelez-nous. C’est toujours plus simple de vive voix.
+      </p>
+      <div class="closing__actions" data-reveal style="--reveal-delay:200ms">
+        <a class="btn btn--cream" href="tel:+33488848667">
+          04 88 84 86 67
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.2" />
+          </svg>
+        </a>
+        <a class="btn btn--outline-light" href="/catalogue">Parcourir le catalogue</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    min-height: clamp(610px, calc(100svh - var(--header-h) - var(--announce-h)), 900px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: var(--wine-black);
+    overflow: hidden;
+    color: var(--cream);
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 52%;
+    animation: hero-scale 1.8s var(--ease-out) both;
+  }
+
+  @keyframes hero-scale {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  .hero__veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(20, 7, 12, 0.58) 0%, rgba(20, 7, 12, 0.12) 34%, rgba(20, 7, 12, 0.82) 100%),
+      linear-gradient(90deg, rgba(20, 7, 12, 0.35) 0%, rgba(20, 7, 12, 0) 60%);
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: clamp(30px, 4vw, 54px);
+    padding-bottom: clamp(44px, 5vw, 70px);
+  }
+
+  .hero__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+    color: rgba(251, 248, 242, 0.82);
+    animation: hero-fade 1s var(--ease-out) 0.2s both;
+  }
+
+  @keyframes hero-fade {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 9.5px;
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .hero__eyebrow span {
+    width: 34px;
+    height: 1px;
+    background: var(--pink);
+  }
+
+  .hero__side {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.35;
+    text-align: right;
+    color: rgba(251, 248, 242, 0.55);
+  }
+
+  .hero__content {
+    margin-top: auto;
+    padding-top: 10vh;
+  }
+
+  .hero h1 {
+    color: var(--cream);
+    font-size: clamp(3.5rem, 8.9vw, 9rem);
+    line-height: 0.92;
+    letter-spacing: -0.028em;
+    max-width: 14ch;
+    animation: hero-title 1.2s var(--ease-out) 0.1s both;
+  }
+
+  .hero h1 em {
+    color: var(--pink-soft);
+  }
+
+  @keyframes hero-title {
+    from {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .hero__bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(30px, 6vw, 90px);
+    margin-top: clamp(28px, 3.5vw, 48px);
+    padding-top: clamp(22px, 2.6vw, 34px);
+    border-top: 1px solid rgba(251, 248, 242, 0.22);
+    animation: hero-fade 1s var(--ease-out) 0.55s both;
+  }
+
+  .hero__sub {
+    max-width: 430px;
+    font-size: 14px;
+    line-height: 1.72;
+    color: rgba(251, 248, 242, 0.72);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .hero__meta {
+    position: relative;
+    z-index: 1;
+    background: var(--cream);
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero__meta-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 62px;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .hero__meta-inner p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero__meta-inner p span:first-child {
+    font-family: var(--font-sans);
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    color: var(--wine);
+  }
+
+  .hero__meta-inner a {
+    border-bottom: 1px solid transparent;
+  }
+
+  .hero__meta-inner a:hover {
+    border-color: var(--wine);
+    color: var(--wine);
+  }
+
+  .hero__scroll {
+    color: var(--muted);
+  }
+
+  .hero__scroll span {
+    display: block;
+    width: 1px;
+    height: 22px;
+    background: var(--line-strong);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero__scroll span::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--wine);
+    animation: scroll-line 2.4s var(--ease-soft) infinite;
+  }
+
+  @keyframes scroll-line {
+    0% {
+      transform: translateY(-100%);
+    }
+    55%,
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  /* ---------- Intro ---------- */
+  .intro {
+    padding-bottom: clamp(70px, 8vw, 110px);
+  }
+
+  .intro__statement {
+    max-width: 1120px;
+    margin-top: 26px;
+    font-size: clamp(2.15rem, 4.75vw, 4.5rem);
+    line-height: 1.04;
+    letter-spacing: -0.024em;
+  }
+
+  .intro__bottom {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.72fr) 1.45fr;
+    gap: clamp(44px, 7vw, 110px);
+    align-items: end;
+    margin-top: clamp(48px, 6vw, 80px);
+    padding-top: clamp(30px, 4vw, 44px);
+    border-top: 1px solid var(--line);
+  }
+
+  .intro__text p {
+    font-size: 14.5px;
+    line-height: 1.78;
+    color: var(--muted);
+    max-width: 36ch;
+  }
+
+  .intro__text .text-link {
+    margin-top: 26px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 0;
+  }
+
+  .stats > div {
+    border-left: 1px solid var(--line);
+    padding-left: clamp(16px, 2vw, 28px);
+  }
+
+  .stats dt {
+    font-size: 8.5px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .stats dd {
+    margin: 10px 0 8px;
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 4vw, 4rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--wine);
+  }
+
+  .stats dd small {
+    font-size: 0.34em;
+    letter-spacing: 0;
+    margin-left: 2px;
+  }
+
+  .stats dd.stats__rating {
+    font-family: var(--font-sans);
+    font-size: clamp(2.6rem, 3.8vw, 3.8rem);
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stats span {
+    display: block;
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    max-width: 17ch;
+  }
+
+  /* ---------- Marquee ---------- */
+  .marquee {
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-deep);
+    padding-block: 15px;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    animation: marquee 46s linear infinite;
+  }
+
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+
+  .marquee__group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .marquee__group span {
+    display: inline-flex;
+    align-items: center;
+    gap: 26px;
+    padding-right: 26px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .marquee__group i {
+    font-style: normal;
+    font-size: 7px;
+    color: var(--pink);
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ---------- Story ---------- */
+  .story__grid {
+    display: grid;
+    grid-template-columns: 0.86fr 1.14fr;
+    gap: clamp(50px, 8vw, 130px);
+    align-items: center;
+  }
+
+  .story__visual {
+    position: relative;
+    max-width: 520px;
+  }
+
+  .story__image {
+    aspect-ratio: 4 / 5;
+  }
+
+  .story__image :global(img) {
+    object-position: 57% 42%;
+  }
+
+  .story__seal {
+    position: absolute;
+    right: -42px;
+    bottom: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 122px;
+    height: 122px;
+    border-radius: 50%;
+    background: var(--wine);
+    color: var(--cream);
+    text-align: center;
+    box-shadow: 0 16px 34px -22px rgba(36, 18, 22, 0.55);
+    transform: rotate(-7deg);
+  }
+
+  .story__seal span {
+    font-size: 7.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--pink-soft);
+  }
+
+  .story__seal strong {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 31px;
+    line-height: 0.95;
+  }
+
+  .story__caption {
+    position: absolute;
+    left: 0;
+    bottom: -30px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .story__content h2 {
+    margin-top: 24px;
+    max-width: 690px;
+  }
+
+  .story__text {
+    margin-top: clamp(24px, 3vw, 36px);
+    display: grid;
+    gap: 16px;
+    max-width: 56ch;
+  }
+
+  .story__text p {
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  .story__signature {
+    margin-top: 30px;
+    padding-left: 18px;
+    border-left: 1px solid var(--pink);
+  }
+
+  .story__name {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 25px;
+    line-height: 1;
+    color: var(--wine);
+  }
+
+  .story__role {
+    margin-top: 6px;
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .story__quote {
+    margin-top: 34px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    max-width: 56ch;
+  }
+
+  .story__quote p {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 1.8vw, 1.7rem);
+    line-height: 1.2;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .story__quote cite {
+    display: block;
+    margin-top: 9px;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 8.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Selection ---------- */
+  .selection {
+    background: var(--paper-deep);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+
+  .selection__note {
+    margin-top: 26px;
+    text-align: right;
+    font-size: 8.5px;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Universes ---------- */
+  .universes {
+    overflow: hidden;
+  }
+
+  .universes__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 50px;
+    margin-bottom: clamp(36px, 5vw, 64px);
+  }
+
+  .universes__head h2 {
+    margin-top: 22px;
+  }
+
+  .universes__intro {
+    max-width: 340px;
+    padding-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+
+  .universes__list {
+    border-top: 1px solid var(--line);
+  }
+
+  .universe {
+    position: relative;
+    display: grid;
+    grid-template-columns: 64px minmax(200px, 0.9fr) 1.4fr auto 36px;
+    align-items: center;
+    gap: 24px;
+    padding-block: clamp(22px, 2.6vw, 34px);
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.45s var(--ease-out);
+  }
+
+  .universe::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--cream);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-soft);
+    z-index: -1;
+  }
+
+  .universe:hover {
+    padding-left: 16px;
+  }
+
+  .universe:hover::before {
+    opacity: 1;
+  }
+
+  .universe__number {
+    font-family: var(--font-sans);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    color: var(--wine);
+  }
+
+  .universe__name {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.6vw, 3.5rem);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    transition: color 0.3s;
+  }
+
+  .universe:hover .universe__name {
+    color: var(--wine);
+  }
+
+  .universe__description {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 48ch;
+  }
+
+  .universe__count {
+    font-size: 8.5px;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .universe__arrow {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--line);
+    color: var(--wine);
+    transition:
+      background 0.35s,
+      color 0.35s,
+      border-color 0.35s,
+      transform 0.35s var(--ease-out);
+  }
+
+  .universe__arrow svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .universe:hover .universe__arrow {
+    background: var(--wine);
+    color: var(--cream);
+    border-color: var(--wine);
+    transform: translate(2px, -2px);
+  }
+
+  .universe__thumb {
+    display: none;
+    width: 56px;
+    height: 70px;
+    overflow: hidden;
+  }
+
+  .universe__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .universe-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 30;
+    width: 280px;
+    height: 350px;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(-999px, -999px, 0) scale(0.94);
+    transition:
+      opacity 0.3s var(--ease-soft),
+      transform 0.15s linear;
+    box-shadow: 0 30px 60px -30px rgba(36, 18, 22, 0.5);
+  }
+
+  .universe-preview.is-visible {
+    opacity: 1;
+  }
+
+  .universe-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ---------- Hire ---------- */
+  .hire {
+    position: relative;
+    background: var(--wine-deep);
+    color: var(--cream);
+    padding-block: clamp(70px, 9vw, 130px);
+  }
+
+  .hire::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 78% 30%, rgba(215, 147, 171, 0.09) 0%, transparent 42%),
+      radial-gradient(circle at 10% 100%, rgba(215, 147, 171, 0.05) 0%, transparent 38%);
+    pointer-events: none;
+  }
+
+  .hire__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(50px, 7vw, 110px);
+    align-items: center;
+  }
+
+  .hire__visual {
+    position: relative;
+  }
+
+  .hire__image {
+    aspect-ratio: 4 / 5;
+  }
+
+  .hire__image :global(img) {
+    transition: transform 1.4s var(--ease-out);
+  }
+
+  .hire__image:hover :global(img) {
+    transform: scale(1.03);
+  }
+
+  .hire__label {
+    position: absolute;
+    top: 50%;
+    right: -22px;
+    transform: translateY(-50%) rotate(90deg);
+    transform-origin: center;
+    font-size: 8px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--pink);
+    white-space: nowrap;
+  }
+
+  .hire h2 {
+    margin-top: 24px;
+    color: var(--cream);
+  }
+
+  .hire h2 em {
+    color: var(--pink);
+  }
+
+  .hire__text {
+    margin-top: 26px;
+    max-width: 52ch;
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: rgba(251, 248, 242, 0.66);
+  }
+
+  .hire__features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 34px;
+    border-top: 1px solid var(--line-light);
+  }
+
+  .hire__features li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-block: 14px;
+    border-bottom: 1px solid var(--line-light);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: rgba(251, 248, 242, 0.86);
+  }
+
+  .hire__features li:nth-child(odd) {
+    padding-right: 20px;
+    border-right: 1px solid var(--line-light);
+  }
+
+  .hire__features li:nth-child(even) {
+    padding-left: 20px;
+  }
+
+  .hire__features span {
+    font-family: var(--font-sans);
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    color: var(--pink);
+  }
+
+  .hire__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  .hire__note {
+    margin-top: 20px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(251, 248, 242, 0.35);
+  }
+
+  /* ---------- Terroir ---------- */
+  .terroir {
+    position: relative;
+    min-height: clamp(480px, 62vh, 680px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--wine-black);
+  }
+
+  .terroir > :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .terroir__veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(20, 7, 12, 0.5) 0%, rgba(20, 7, 12, 0.45) 50%, rgba(20, 7, 12, 0.7) 100%),
+      linear-gradient(90deg, rgba(20, 7, 12, 0.55) 0%, rgba(20, 7, 12, 0.15) 70%);
+  }
+
+  .terroir__content {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(70px, 8vw, 100px);
+  }
+
+  .terroir__quote {
+    max-width: 860px;
+    margin-top: 26px;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.2vw, 3.9rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    text-wrap: balance;
+  }
+
+  .terroir__quote em {
+    color: var(--pink-soft);
+    font-style: italic;
+  }
+
+  .terroir__source {
+    margin-top: 30px;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(251, 248, 242, 0.5);
+  }
+
+  /* ---------- Reviews ---------- */
+  .reviews {
+    background: var(--cream);
+  }
+
+  .reviews__grid {
+    display: grid;
+    grid-template-columns: 0.82fr 1.18fr;
+    gap: clamp(50px, 8vw, 130px);
+    align-items: start;
+  }
+
+  .reviews__intro h2 {
+    margin-top: 24px;
+  }
+
+  .reviews__rating {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 38px;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
+  }
+
+  .reviews__score {
+    font-family: var(--font-sans);
+    font-size: clamp(3rem, 4.2vw, 4.1rem);
+    font-weight: 400;
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--wine);
+  }
+
+  .reviews__score small {
+    font-size: 0.3em;
+    letter-spacing: 0;
+  }
+
+  .reviews__stars {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    color: var(--gold);
+  }
+
+  .reviews__count {
+    display: block;
+    margin-top: 5px;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .reviews__intro .text-link {
+    margin-top: 28px;
+  }
+
+  .reviews__note {
+    max-width: 26ch;
+    margin-top: 34px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+
+  .reviews__quotes {
+    border-top: 1px solid var(--line);
+  }
+
+  .reviews__quotes blockquote {
+    padding-block: clamp(28px, 3.4vw, 42px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .reviews__quotes p {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.2vw, 2rem);
+    line-height: 1.32;
+    letter-spacing: -0.012em;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  .reviews__quotes cite {
+    display: block;
+    margin-top: 18px;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 8.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Practical ---------- */
+  .practical {
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+  }
+
+  .practical__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(50px, 6vw, 90px);
+    align-items: start;
+  }
+
+  .practical__info h2 {
+    margin-top: 24px;
+    font-size: clamp(2.4rem, 3.5vw, 3.9rem);
+  }
+
+  .practical__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 28px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    background: var(--cream);
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .practical__status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #6f7c54;
+  }
+
+  .practical__status[data-state='closed'] .practical__status-dot {
+    background: var(--wine);
+  }
+
+  .practical__address {
+    margin-top: 34px;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
+  }
+
+  .practical__address-label,
+  .practical__hours-title {
+    font-size: 8.5px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .practical__address-line {
+    margin-top: 10px;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 2.4vw, 2.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .practical__address-city {
+    margin-top: 6px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wine);
+  }
+
+  .practical__address-note {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .practical__contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-top: 25px;
+  }
+
+  .practical__phone {
+    font-family: var(--font-sans);
+    font-size: clamp(1.5rem, 2vw, 1.9rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    color: var(--wine);
+  }
+
+  .practical__mail {
+    font-size: 12px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+  }
+
+  .practical__mail:hover {
+    color: var(--wine);
+    border-color: var(--wine);
+  }
+
+  .practical__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .practical__good {
+    margin-top: 34px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .practical__good-title {
+    font-size: 8.5px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .practical__good ul {
+    margin-top: 10px;
+  }
+
+  .practical__good li {
+    position: relative;
+    padding-left: 14px;
+    font-size: 11.5px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+  }
+
+  .practical__good li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.85em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--pink);
+  }
+
+  .practical__side {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .practical__map {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    min-height: 300px;
+    background: var(--paper-deep);
+    border: 1px solid var(--line);
+  }
+
+  .practical__map iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: grayscale(1) contrast(1.04) sepia(0.16);
+  }
+
+  .practical__map-card {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--ink);
+    box-shadow: 0 16px 30px -22px rgba(36, 18, 22, 0.45);
+  }
+
+  .practical__map-card img {
+    width: 13px;
+    height: auto;
+  }
+
+  .practical__map-card small {
+    color: var(--muted);
+    font-size: 9px;
+  }
+
+  .practical__hours {
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+
+  .practical__hours dl {
+    margin-top: 10px;
+  }
+
+  .practical__hours dl > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    padding-block: 7px;
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--muted);
+    transition: color 0.3s, padding 0.3s;
+  }
+
+  .practical__hours dl > div.is-today {
+    color: var(--wine);
+    padding-left: 8px;
+    border-left: 2px solid var(--wine);
+  }
+
+  .practical__hours dt {
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+
+  .practical__hours dd {
+    margin: 0;
+    font-size: 10.5px;
+    text-align: right;
+    color: var(--ink-soft);
+  }
+
+  .practical__hours .is-closed dd,
+  .practical__hours .is-closed {
+    color: rgba(113, 92, 94, 0.55);
+  }
+
+  /* ---------- Closing ---------- */
+  .closing {
+    position: relative;
+    overflow: hidden;
+    background: var(--wine);
+    color: var(--cream);
+    padding-block: clamp(72px, 9vw, 128px);
+  }
+
+  .closing__mark {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    width: clamp(120px, 16vw, 230px);
+    opacity: 0.1;
+    transform: translateY(-50%) rotate(8deg);
+    pointer-events: none;
+  }
+
+  .closing__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .closing h2 {
+    margin-top: 24px;
+    color: var(--cream);
+    font-size: clamp(2.8rem, 6.5vw, 6rem);
+  }
+
+  .closing h2 em {
+    color: var(--pink-soft);
+  }
+
+  .closing__text {
+    margin-top: 22px;
+    max-width: 46ch;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: rgba(251, 248, 242, 0.7);
+  }
+
+  .closing__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1200px) {
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 960px) {
+    .hero__side {
+      display: none;
+    }
+
+    .hero__bottom {
+      display: block;
+    }
+
+    .hero__actions {
+      margin-top: 24px;
+    }
+
+    .hero__meta-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 24px;
+      padding-block: 16px;
+    }
+
+    .hero__scroll {
+      display: none !important;
+    }
+
+    .intro__bottom {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .intro__text p {
+      max-width: 52ch;
+    }
+
+    .story__grid,
+    .hire__grid,
+    .reviews__grid,
+    .practical__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .story__visual {
+      max-width: 460px;
+      margin-inline: auto;
+    }
+
+    .story__seal {
+      right: -20px;
+      bottom: 46px;
+      width: 100px;
+      height: 100px;
+    }
+
+    .story__seal strong {
+      font-size: 25px;
+    }
+
+    .story__caption {
+      bottom: -26px;
+    }
+
+    .hire__grid {
+      gap: 40px;
+    }
+
+    .hire__visual {
+      max-width: 480px;
+      margin-inline: auto;
+    }
+
+    .hire__label {
+      display: none;
+    }
+
+    .reviews__grid,
+    .practical__grid {
+      gap: 46px;
+    }
+
+    .universes__head {
+      display: block;
+    }
+
+    .universes__intro {
+      margin-top: 20px;
+      max-width: 52ch;
+    }
+
+    .universe {
+      grid-template-columns: 44px 1fr auto 36px;
+      gap: 14px;
+    }
+
+    .universe__description {
+      grid-column: 2 / 3;
+      font-size: 12.5px;
+      margin-top: -6px;
+    }
+
+    .universe__count {
+      display: none;
+    }
+
+    .universe__thumb {
+      display: block;
+      grid-column: 3;
+      grid-row: 1 / 3;
+    }
+
+    .universe__arrow {
+      display: none;
+    }
+
+    .universe-preview {
+      display: none;
+    }
+
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      min-height: calc(100svh - var(--header-h) - var(--announce-h));
+    }
+
+    .hero h1 {
+      font-size: clamp(2.9rem, 13.5vw, 4.6rem);
+    }
+
+    .hero__content {
+      padding-top: 8vh;
+    }
+
+    .hero__actions .btn {
+      flex: 1;
+      padding-inline: 14px;
+      font-size: 9px;
+    }
+
+    .hero__meta-inner {
+      grid-template-columns: 1fr;
+      gap: 7px;
+    }
+
+    .hero__meta-inner p span:first-child {
+      display: none;
+    }
+
+    .stats {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .stats > div {
+      display: block;
+      padding: 18px 0 18px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stats > div:last-child {
+      border-bottom: 0;
+    }
+
+    .stats dd {
+      margin: 9px 0 7px;
+      font-size: 2.7rem;
+    }
+
+    .stats dd.stats__rating {
+      font-size: 2.5rem;
+    }
+
+    .stats span {
+      max-width: none;
+    }
+
+    .story__seal {
+      display: none;
+    }
+
+    .products-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .universe {
+      grid-template-columns: 30px 1fr 36px;
+      padding-block: 20px;
+    }
+
+    .universe__name {
+      font-size: 2.1rem;
+    }
+
+    .universe__description {
+      grid-column: 2 / 4;
+    }
+
+    .universe__thumb {
+      display: none;
+    }
+
+    .universe {
+      padding-left: 0 !important;
+    }
+
+    .hire__features {
+      grid-template-columns: 1fr;
+    }
+
+    .hire__features li:nth-child(odd) {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .hire__features li:nth-child(even) {
+      padding-left: 0;
+    }
+
+    .reviews__rating {
+      flex-wrap: wrap;
+    }
+
+    .practical__map {
+      aspect-ratio: 1 / 1;
+    }
+
+    .closing__mark {
+      opacity: 0.06;
+      right: -30px;
+    }
+  }
+</style>
+
+<script>
+  // Hover preview for the universes list
+  const preview = document.querySelector<HTMLElement>('.universe-preview');
+  const previewImage = preview?.querySelector('img');
+  const links = document.querySelectorAll<HTMLElement>('.universe[data-preview]');
+  const finePointer = window.matchMedia('(pointer: fine)');
+
+  if (preview && previewImage && finePointer.matches) {
+    let raf = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    const render = () => {
+      preview.style.transform = `translate3d(${targetX + 26}px, ${targetY - 175}px, 0) scale(1)`;
+      raf = 0;
+    };
+
+    links.forEach((link) => {
+      link.addEventListener('mouseenter', () => {
+        previewImage.src = link.dataset.preview ?? '';
+        preview.classList.add('is-visible');
+        const rect = link.getBoundingClientRect();
+        targetX = rect.right - 330;
+        targetY = rect.top + rect.height / 2;
+        render();
+      });
+
+      link.addEventListener('mousemove', (event) => {
+        targetX = event.clientX - 140;
+        targetY = event.clientY;
+        if (!raf) raf = requestAnimationFrame(render);
+      });
+
+      link.addEventListener('mouseleave', () => {
+        preview.classList.remove('is-visible');
+        preview.style.transform = 'translate3d(-999px, -999px, 0) scale(0.94)';
+      });
+    });
+  }
+
+  // Opening status & current day highlight (Paris time)
+  const status = document.querySelector<HTMLElement>('[data-open-status]');
+  const label = status?.querySelector<HTMLElement>('[data-open-label]');
+  const rows = document.querySelectorAll<HTMLElement>('[data-hours-day]');
+
+  const schedule: Record<number, [number, number][]> = {
+    0: [],
+    1: [[870, 1170]],
+    2: [[570, 780], [870, 1170]],
+    3: [[570, 780], [870, 1170]],
+    4: [[570, 780], [870, 1170]],
+    5: [[570, 780], [870, 1170]],
+    6: [[570, 1170]],
+  };
+
+  const now = new Date();
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Paris',
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(now);
+
+  const weekday = parts.find((part) => part.type === 'weekday')?.value ?? 'Mon';
+  const hour = Number(parts.find((part) => part.type === 'hour')?.value ?? 0);
+  const minute = Number(parts.find((part) => part.type === 'minute')?.value ?? 0);
+  const dayMap: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  const day = dayMap[weekday] ?? 1;
+  const current = hour * 60 + minute;
+  const windows = schedule[day] ?? [];
+  const openWindow = windows.find(([start, end]) => current >= start && current < end);
+  const nextWindow = windows.find(([start]) => current < start);
+
+  rows.forEach((row) => {
+    row.classList.toggle('is-today', Number(row.dataset.hoursDay) === day);
+  });
+
+  if (status && label) {
+    if (openWindow) {
+      const end = openWindow[1];
+      label.textContent = `Ouvert jusqu’à ${Math.floor(end / 60)}h${String(end % 60).padStart(2, '0')}`;
+      status.dataset.state = 'open';
+    } else {
+      status.dataset.state = 'closed';
+      label.textContent = nextWindow
+        ? `Fermé · ouvre à ${Math.floor(nextWindow[0] / 60)}h${String(nextWindow[0] % 60).padStart(2, '0')}`
+        : 'Fermé aujourd’hui';
+    }
+  }
+</script>

@@ -1,0 +1,531 @@
+---
+const path = Astro.url.pathname;
+const isHome = path === '/';
+const links = [
+  { label: 'La maison', href: isHome ? '#la-maison' : '/#la-maison' },
+  { label: 'La sélection', href: isHome ? '#selection' : '/#selection' },
+  { label: 'Le catalogue', href: '/catalogue' },
+  { label: 'Tireuses', href: isHome ? '#tireuses' : '/#tireuses' },
+];
+const mobileLinks = [
+  ...links,
+  { label: 'Nous trouver', href: isHome ? '#nous-trouver' : '/#nous-trouver' },
+];
+---
+
+<div class="announce">
+  <div class="shell announce__inner">
+    <p class="announce__left">
+      <span class="announce__dot" aria-hidden="true"></span>
+      Ouvert du lundi au samedi
+    </p>
+    <p class="announce__right">
+      <span class="announce__address">500 avenue de Verdun, Orange</span>
+      <span class="announce__sep" aria-hidden="true">·</span>
+      <a href="tel:+33488848667">04 88 84 86 67</a>
+    </p>
+  </div>
+</div>
+
+<header class="header" data-header>
+  <div class="shell header__inner">
+    <a class="brand" href="/" aria-label="Caveau Chris et Domi, accueil">
+      <img class="brand__mark" src="/brand/logo-mark.png" alt="" width="22" height="41" />
+      <span class="brand__type">
+        <span class="brand__caveau">Caveau</span>
+        <span class="brand__name">Chris &amp; Domi</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Navigation principale">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          aria-current={link.href === '/catalogue' && path.startsWith('/catalogue') ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="header__actions">
+      <a class="header__phone" href="tel:+33488848667">
+        <span class="header__phone-label">Appeler la cave</span>
+        <span class="header__phone-number">04 88 84 86 67</span>
+      </a>
+      <a class="btn btn--solid header__cta" href={isHome ? '#nous-trouver' : '/#nous-trouver'}>
+        Nous trouver
+      </a>
+      <button
+        class="burger"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <span class="burger__lines" aria-hidden="true"><i></i><i></i></span>
+        <span class="sr-only">Ouvrir le menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" data-menu aria-hidden="true">
+  <div class="mobile-menu__top">
+    <a class="mobile-menu__brand" href="/" aria-label="Caveau Chris et Domi, accueil">
+      <img src="/brand/logo-light.png" alt="Caveau Chris &amp; Domi" width="332" height="227" />
+    </a>
+    <button class="mobile-menu__close" type="button" data-menu-close aria-label="Fermer le menu">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.2" />
+      </svg>
+    </button>
+  </div>
+
+  <nav class="mobile-menu__nav" aria-label="Navigation mobile">
+    {mobileLinks.map((link, index) => (
+      <a href={link.href} style={`--i:${index}`}>
+        <span class="mobile-menu__index">0{index + 1}</span>
+        {link.label}
+      </a>
+    ))}
+  </nav>
+
+  <div class="mobile-menu__foot">
+    <a class="mobile-menu__phone" href="tel:+33488848667">04 88 84 86 67</a>
+    <p>500 avenue de Verdun<br />84100 Orange</p>
+    <p class="mobile-menu__hours">Lundi : 14h30–19h30<br />Mardi – vendredi : 9h30–13h / 14h30–19h30<br />Samedi : 9h30–19h30 · Dimanche : fermé</p>
+  </div>
+
+  <img class="mobile-menu__mark" src="/brand/logo-mark.png" alt="" aria-hidden="true" />
+</div>
+
+<style>
+  .announce {
+    background: var(--wine-deep);
+    color: var(--cream);
+    position: relative;
+    z-index: 60;
+  }
+
+  .announce__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: var(--announce-h);
+    font-size: 9.5px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .announce__left,
+  .announce__right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+
+  .announce__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--pink);
+    box-shadow: 0 0 0 3px rgba(215, 147, 171, 0.16);
+  }
+
+  .announce__sep {
+    opacity: 0.4;
+  }
+
+  .announce__right a {
+    color: var(--pink-soft);
+    transition: color 0.25s var(--ease-soft);
+  }
+
+  .announce__right a:hover {
+    color: var(--cream);
+  }
+
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color 0.35s var(--ease-soft),
+      background 0.35s var(--ease-soft);
+  }
+
+  .header.is-scrolled {
+    border-bottom-color: var(--line);
+    background: var(--paper);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    height: var(--header-h);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex-shrink: 0;
+  }
+
+  .brand__mark {
+    width: 21px;
+    height: auto;
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .brand:hover .brand__mark {
+    transform: translateY(-2px);
+  }
+
+  .brand__type {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .brand__caveau {
+    font-size: 7.5px;
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--wine);
+    padding-left: 1px;
+  }
+
+  .brand__name {
+    font-family: var(--font-display);
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--wine);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 2.8vw, 38px);
+    margin-inline: auto;
+  }
+
+  .nav a {
+    position: relative;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-block: 8px;
+    transition: color 0.3s var(--ease-soft);
+  }
+
+  .nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    width: 100%;
+    height: 1px;
+    background: var(--wine);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s var(--ease-out);
+  }
+
+  .nav a:hover,
+  .nav a[aria-current='page'] {
+    color: var(--wine);
+  }
+
+  .nav a:hover::after,
+  .nav a[aria-current='page']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-shrink: 0;
+  }
+
+  .header__phone {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: right;
+    line-height: 1;
+  }
+
+  .header__phone-label {
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .header__phone-number {
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+
+  .header__cta {
+    min-height: 40px;
+    padding-inline: 20px;
+    font-size: 9px;
+  }
+
+  .burger {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .burger__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 17px;
+  }
+
+  .burger__lines i {
+    display: block;
+    height: 1px;
+    background: var(--ink);
+    transition: transform 0.3s var(--ease-soft);
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    padding: 26px var(--gutter) 40px;
+    background: var(--wine-deep);
+    color: var(--cream);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px);
+    transition:
+      opacity 0.45s var(--ease-soft),
+      transform 0.45s var(--ease-out),
+      visibility 0.45s;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .mobile-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .mobile-menu__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line-light);
+  }
+
+  .mobile-menu__brand img {
+    width: 132px;
+    height: auto;
+  }
+
+  .mobile-menu__close {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line-light);
+    background: transparent;
+    color: var(--cream);
+  }
+
+  .mobile-menu__close svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mobile-menu__nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: clamp(28px, 6vh, 60px);
+  }
+
+  .mobile-menu__nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding-block: clamp(10px, 1.6vh, 18px);
+    border-bottom: 1px solid var(--line-light);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 8vw, 3.1rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.5s var(--ease-out),
+      transform 0.5s var(--ease-out),
+      color 0.3s;
+    transition-delay: calc(var(--i) * 55ms + 100ms);
+  }
+
+  .mobile-menu.is-open .mobile-menu__nav a {
+    opacity: 1;
+    transform: none;
+  }
+
+  .mobile-menu__nav a:hover {
+    color: var(--pink);
+  }
+
+  .mobile-menu__index {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--pink);
+  }
+
+  .mobile-menu__foot {
+    margin-top: auto;
+    padding-top: 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 11px;
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    color: rgba(251, 248, 242, 0.62);
+  }
+
+  .mobile-menu__phone {
+    font-family: var(--font-sans);
+    font-size: 21px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+
+  .mobile-menu__hours {
+    margin-top: 4px;
+    font-size: 10px;
+    color: rgba(251, 248, 242, 0.45);
+  }
+
+  .mobile-menu__mark {
+    position: absolute;
+    right: -18px;
+    bottom: 30px;
+    width: 120px;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  @media (max-width: 1100px) {
+    .nav {
+      display: none;
+    }
+
+    .header__cta {
+      display: none;
+    }
+
+    .burger {
+      display: inline-flex;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .announce__address,
+    .announce__sep {
+      display: none;
+    }
+
+    .announce__inner {
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 8px;
+      letter-spacing: 0.14em;
+    }
+
+    .brand__name {
+      font-size: 21px;
+    }
+
+    .brand__mark {
+      width: 17px;
+    }
+
+    .header__phone {
+      display: none;
+    }
+
+    .header__actions {
+      gap: 10px;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const close = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+
+  const onScroll = () => {
+    if (!header) return;
+    header.classList.toggle('is-scrolled', window.scrollY > 8);
+  };
+
+  const setMenu = (open: boolean) => {
+    if (!menu || !toggle) return;
+    menu.classList.toggle('is-open', open);
+    menu.setAttribute('aria-hidden', String(!open));
+    toggle.setAttribute('aria-expanded', String(open));
+    document.body.classList.toggle('no-scroll', open);
+    if (open) {
+      close?.focus();
+    } else {
+      toggle.focus();
+    }
+  };
+
+  toggle?.addEventListener('click', () => setMenu(true));
+  close?.addEventListener('click', () => setMenu(false));
+  menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && menu?.classList.contains('is-open')) setMenu(false);
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
