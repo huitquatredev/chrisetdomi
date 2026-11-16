@@ -78,6 +78,19 @@ Les références produits s’inspirent de [Vinatis](https://www.vinatis.com/) e
 
 `vercel.json` force le framework Astro, les URL propres et l’absence de slash final.
 
+## Vercel Web Analytics
+
+Le projet inclut **`@vercel/analytics`**, avec le composant `<Analytics />` monté dans `src/layouts/BaseLayout.astro`.
+
+Pour activer la collecte :
+
+1. Ouvrir le projet dans Vercel.
+2. Aller dans **Analytics** → **Enable**.
+3. Redéployer le projet (le push sur `master` déclenche le déploiement).
+
+Les statistiques apparaissent ensuite dans l’onglet **Analytics** du projet Vercel.  
+En local, le script `/_vercel/insights/script.js` n’existe pas : c’est normal, la collecte ne fonctionne que sur un déploiement Vercel.
+
 ## Accessibilité & bonnes pratiques
 
 - Structure sémantique, un seul `h1` par page, lien d’évitement.
